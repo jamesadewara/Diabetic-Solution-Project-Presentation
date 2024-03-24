@@ -1,3 +1,4 @@
+import 'package:diabetic/src/control/routers/props.dart';
 import 'package:diabetic/src/views/base.dart';
 import 'package:diabetic/src/views/index.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,19 @@ class MainRouteGenerator {
           },
           routes: <RouteBase>[
             GoRoute(
-              path: "${AppRoutes.result}/:id/:path",
+              path: "${AppRoutes.result}",
               name: AppRoutes.result,
               builder: (BuildContext context, GoRouterState state) {
                 return BaseApp(
                   child: ResultScreen(
-                    state: state,
-                  ),
+                      state: state,
+                      params: RouteParams(
+                        id: state.uri.queryParameters["id"] ?? "",
+                        name: state.uri.queryParameters["name"] ?? "",
+                        accuracy: state.uri.queryParameters["accuracy"] ?? "",
+                        precision: state.uri.queryParameters["precision"] ?? "",
+                        result: state.uri.queryParameters["result"] ?? "",
+                      )),
                 );
               },
             )

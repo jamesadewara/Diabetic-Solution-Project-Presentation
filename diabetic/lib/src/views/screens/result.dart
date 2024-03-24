@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:diabetic/src/control/routers/props.dart';
 import 'package:diabetic/src/control/routers/route_generator.dart';
 import 'package:diabetic/src/views/screens/custom_widgets/progress_card.dart';
 import 'package:diabetic/src/views/screens/custom_widgets/wrap.dart';
@@ -8,10 +9,12 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class ResultScreen extends StatefulWidget {
   final GoRouterState state;
+  final RouteParams params;
 
   const ResultScreen({
     super.key,
     required this.state,
+    required this.params,
   });
 
   @override
@@ -28,7 +31,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.state.pathParameters);
+    print(widget.params.name);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -55,19 +58,20 @@ class _ResultScreenState extends State<ResultScreen> {
                                   : 72),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 const SizedBox(height: 16),
-                                const WrapBody(children: [
+                                WrapBody(children: [
                                   ProgressCard(
                                     title: "Precision",
-                                    subtitle: "100.00",
-                                    value: 9.0,
+                                    subtitle: widget.params.precision,
+                                    value:
+                                        double.parse(widget.params.precision),
                                   ),
                                   ProgressCard(
                                     title: "Accuracy",
-                                    subtitle: "100.00",
-                                    value: 9.0,
+                                    subtitle: widget.params.accuracy,
+                                    value: double.parse(widget.params.accuracy),
                                   ),
                                 ]),
                                 const SizedBox(height: 64),
@@ -77,7 +81,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     AutoSizeText(
-                                      "Hello ",
+                                      "Hello ${widget.params.name}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .displayMedium,
@@ -86,7 +90,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                     ),
                                     const SizedBox(height: 32),
                                     AutoSizeText(
-                                      "Based on the information provided, it appears that you are currently not diagnosed with diabetes.",
+                                      "Based on the information provided, it appears that you are currently ${double.parse(widget.params.result) == 1 ? "" : "not"} diagnosed with diabetes.",
                                       maxLines: 2,
                                       textAlign: TextAlign.center,
                                       style: Theme.of(context)

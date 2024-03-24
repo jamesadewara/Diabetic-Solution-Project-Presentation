@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:diabetic/src/control/notifier_listener.dart';
 import 'package:diabetic/src/control/routers/props.dart';
@@ -54,21 +52,9 @@ class _FormScreenState extends State<FormScreen> {
         };
         Future<ApiRequest> result = serviceApi.predictResult(payload);
         result.then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              backgroundColor: value.error ? Colors.red : Colors.green,
-              content: ListTile(
-                titleTextStyle: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white),
-                title: Text(value.error ? "Error" : "Success"),
-                subtitleTextStyle: const TextStyle(
-                    fontWeight: FontWeight.normal, color: Colors.white),
-                subtitle: const Text("loading..."),
-              )));
-
+          snackBar(context, value.error, value.message);
           if (value.error == false) {
-            GoRouter.of(context).pushNamed(AppRoutes.result, pathParameters: {
+            GoRouter.of(context).goNamed(AppRoutes.result, queryParameters: {
               "name": _nameController.text,
               "accuracy": value.data.accuracy,
               "precision": value.data.precision,
@@ -397,6 +383,20 @@ class _FormScreenState extends State<FormScreen> {
                       ]),
                 ),
               )),
+        )));
+  }
+
+  static snackBar(BuildContext context, error, message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        backgroundColor: error ? Colors.red : Colors.green,
+        content: ListTile(
+          titleTextStyle:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          title: Text(error ? "Error" : "Success"),
+          subtitleTextStyle: const TextStyle(
+              fontWeight: FontWeight.normal, color: Colors.white),
+          subtitle: Text(message),
         )));
   }
 }

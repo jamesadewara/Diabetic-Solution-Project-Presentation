@@ -37,7 +37,7 @@ class _CustomCircularProgressIndicatorState
         Align(
           alignment: Alignment.center,
           child: Text(
-            "${((widget.value != null ? widget.value! : 0 * 100).round()).toString()}%",
+            "${((widget.value != null ? widget.value! * 100 : 0 * 100).round()).toString()}%",
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
